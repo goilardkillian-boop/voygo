@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { MapPin, CheckCircle, Wallet, Users, BookOpen, Globe } from "lucide-react";
 
 const features = [
@@ -35,6 +36,8 @@ const features = [
 ];
 
 export default function LandingPage() {
+  // Auto-redirect to dashboard in demo mode
+  redirect("/dashboard");
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
