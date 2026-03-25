@@ -1,0 +1,10 @@
+{
+  "name": "@voygo/db",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "db:migrate": "npx supabase db push",
+    "db:seed": "npx supabase db reset",
+    "type-check": "echo 'No TS to check'"
+  }
+}
