@@ -20,7 +20,7 @@ export const allergyTypeSchema = z.enum([
 
 // --- Trip ---
 
-export const createTripSchema = z.object({
+export const createTripBaseSchema = z.object({
   title: z.string().min(1, "Le titre est requis").max(100),
   destination: z.string().min(1, "La destination est requise").max(200),
   destination_country: z.string().min(1).max(100),
@@ -32,12 +32,14 @@ export const createTripSchema = z.object({
   budget_target: z.number().min(0).nullable().optional(),
   budget_currency: z.string().length(3).default("EUR"),
   notes: z.string().max(2000).nullable().optional(),
-}).refine(
+});
+
+export const createTripSchema = createTripBaseSchema.refine(
   (data) => new Date(data.end_date) >= new Date(data.start_date),
   { message: "La date de fin doit être après la date de début", path: ["end_date"] }
 );
 
-export const updateTripSchema = createTripSchema.partial();
+export const updateTripSchema = createTripBaseSchema.partial();
 
 // --- Expense ---
 
