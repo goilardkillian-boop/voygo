@@ -5,7 +5,7 @@ import { useState } from "react";
 import { MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, isDemo } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
@@ -15,13 +15,18 @@ export default function SignupPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     setLoading(true);
 
+    if (isDemo()) {
+      router.push("/dashboard");
+      return;
+    }
+
+    const supabase = createClient();
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -40,6 +45,12 @@ export default function SignupPage() {
   }
 
   async function handleGoogleSignup() {
+    if (isDemo()) {
+      router.push("/dashboard");
+      return;
+    }
+
+    const supabase = createClient();
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo: `${window.location.origin}/auth/callback` },
